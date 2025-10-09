@@ -12,6 +12,13 @@ Le tecnologie utilizzate sono:
 -HTML;
 -CSS;
 
+Il lavoro sul sito web è stato suddiviso tra quattro programmatori per ottimizzare il processo di sviluppo e mantenere un buon controllo sulle modifiche.
+Il PM ha gestito il branch principale (master o main), che rappresenta la versione stabile e completa del sito.
+Gli altri tre programmatori hanno lavorato su branch separati, ognuno dedicato a una specifica sezione o funzionalità del sito, come ad esempio diverse voci di menu o pagine.
+
+In questo modo, ogni sviluppatore ha potuto lavorare in autonomia sulle proprie parti senza interferire direttamente con il lavoro degli altri. Quando una sezione era completa e testata, il relativo branch veniva unito (merge) al branch principale, aggiornando così la versione stabile del sito con le nuove funzionalità.
+
+Questa strategia permette di mantenere il codice ordinato, facilita il lavoro di squadra e riduce il rischio di conflitti o errori durante lo sviluppo.
 Il progetto comprende i seguenti file:
 -index.html (Homepage dedicata al menu completo);
 -style.css (Foglio di stile principale);
