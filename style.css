@@ -1,245 +1,330 @@
-/* Generali */
-/* Resetta margini e padding di tutti gli elementi e imposta il box-sizing a border-box */
+/* ==========================================================================
+   1. RESET & VARIABILI GLOBALI
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+:root {
+    --bg-principal: #0b0c10;      /* Nero profondo spaziale */
+    --bg-card: rgba(26, 29, 38, 0.7); /* Grigio scuro trasparente effetto vetro */
+    --oro-neon: #ffc107;         /* Oro acceso */
+    --oro-glow: rgba(255, 193, 7, 0.2);
+    --testo-main: #f4f4f6;       /* Bianco ghiaccio */
+    --testo-mutato: #959a9e;     /* Grigio per descrizioni */
+    --font-main: 'Plus Jakarta Sans', sans-serif;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Animazione fluida premium */
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth; /* Scorrimento morbido per i link della navbar */
 }
 
-html{
-    scroll-behavior: smooth;
-}
-
-/* Stile per il corpo della pagina */
 body {
-    font-family: 'Open Sans', sans-serif;
-    /* Font principale della pagina */
-    color: #fff;
-    /* Colore del testo bianco */
-    background-image: url('img/p.jpg');
-    /* Immagine di sfondo */
-    background-size: cover;
-    /* Immagine copre tutta l’area disponibile */
-    background-position: center;
-    /* Centra l’immagine di sfondo */
-    background-repeat: no-repeat;
-    /* Impedisce la ripetizione dell’immagine */
-    backdrop-filter: brightness(0.6);
-    /* Oscura lo sfondo per migliorare la leggibilità */
-    min-height: 100vh;
-    /* Altezza minima della pagina pari all’altezza viewport */
+    background-color: var(--bg-principal);
+    color: var(--testo-main);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* Stile per il contenuto principale */
-main {
-    padding-bottom: 140px;
-    /* Spazio extra in fondo per distanziare dal footer fisso */
-    min-height: calc(100vh - 120px);
-    /* Assicura che il contenuto abbia almeno l'altezza della viewport meno footer e header */
+/* Sfondo con sfumatura radiale di luce soffusa */
+body::before {
+    content: '';
+    position: fixed;
+    top: -10%;
+    left: -10%;
+    width: 130%;
+    height: 130%;
+    background: radial-gradient(circle at 80% 20%, rgba(255, 193, 7, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 10% 80%, rgba(255, 193, 7, 0.03) 0%, transparent 40%);
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* Header */
-/* Contenitore dell’intestazione con testo centrato e sfondo scuro semitrasparente */
+/* ==========================================================================
+   2. HEADER & NAVBAR (ULTRA-MINIMAL)
+   ========================================================================== */
 header {
     text-align: center;
-    padding: 50px 20px 20px;
-    /* Spaziatura interna: sopra, destra/sinistra, sotto */
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Sfondo nero con trasparenza */
-    backdrop-filter: blur(5px);
-    /* Sfocatura dello sfondo */
+    padding: 100px 20px 40px;
+    position: relative;
 }
 
-/* Titolo principale nell’header */
 header h1 {
-    font-size: 4em;
-    /* Dimensione grande del font */
-    font-family: 'Pacifico';
-    /* Font decorativo */
-    color: #ffffff;
-    /* Colore giallo oro */
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ffffff 30%, var(--oro-neon) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
 }
 
-/* Paragrafo sotto il titolo */
 header p {
-    font-size: 1.2em;
-    /* Dimensione testo leggermente più grande */
+    color: var(--testo-mutato);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
 }
 
-/* Menu */
-/* Contenitore della lista dei prodotti disposto in griglia con colonne flessibili */
-.menu {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    /* Colonne responsive: minimo 250px, si adattano */
-    gap: 30px;
-    /* Spaziatura tra gli elementi della griglia */
-    padding: 40px;
-    /* Spazio interno intorno al menu */
-    background-color: rgba(0, 0, 0, 0.125);
-    /* Sfondo nero molto trasparente */
-}
-
-/* Scheda singolo elemento del menu */
-.menu-item {
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Sfondo nero opaco */
-    padding: 15px 15px 10px 15px;
-    /* Spaziatura interna (alto, dx, basso, sx) */
-    border-radius: 10px;
-    /* Angoli arrotondati */
-    border-left: 5px solid #ffcc00;
-    /* Bordo sinistro giallo oro */
-    transition: transform 0.2s ease;
-    /* Transizione morbida per trasformazioni */
-    width: 100%;
-    /* Occupa tutta la larghezza disponibile */
-    max-width: 300px;
-    /* Larghezza massima per uniformità */
+/* Navbar Fluttuante "Glassmorphism" */
+.menu-nav {
+    position: sticky;
+    top: 20px;
+    z-index: 1000;
     display: flex;
-    /* Flexbox per contenuto interno */
-    flex-direction: column;
-    /* Organizza contenuti verticalmente */
-    justify-content: space-between;
-    /* Spazio distribuito tra elementi */
-    overflow: hidden;
-    /* Nasconde contenuti che escono dai bordi */
+    justify-content: center;
+    gap: 10px;
+    background: rgba(11, 12, 16, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 10px;
+    border-radius: 50px;
+    max-width: 600px;
+    margin: 0 auto 60px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Immagine all’interno della card menu */
+.menu-nav a {
+    color: var(--testo-main);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 22px;
+    border-radius: 30px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-nav a:hover {
+    background: rgba(255, 193, 7, 0.1);
+    color: var(--oro-neon);
+    box-shadow: inset 0 0 10px var(--oro-glow);
+}
+
+/* ==========================================================================
+   3. STRUTTURA DEL MENU (CSS GRID MODERNO)
+   ========================================================================== */
+.menu {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Titoli delle sezioni (Pizze, Dolci, Bevande) che occupano tutta la riga */
+.menu-section-title {
+    grid-column: 1 / -1;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.menu-section-title h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Linea decorativa futuristica sotto i titoli */
+.menu-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--oro-neon);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--oro-neon);
+}
+
+/* ==========================================================================
+   4. LE CARD DEI PRODOTTI (STILE GLASSMORPHISM)
+   ========================================================================== */
+.menu-item {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transition: var(--transition);
+}
+
+/* Effetto Hover Avanzato della Card */
+.menu-item:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 193, 7, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 
+                0 0 20px rgba(255, 193, 7, 0.05);
+}
+
+/* Immagini del Prodotto */
 .menu-item img {
     width: 100%;
-    /* Larghezza massima della card */
     height: 220px;
-    /* Altezza fissa */
     object-fit: cover;
-    /* L’immagine si adatta senza distorsione e ritaglia */
-    border-radius: 8px;
-    /* Angoli arrotondati per l’immagine */
-    margin-top: 10px;
-    /* Spazio sopra l’immagine */
+    border-radius: 16px;
+    margin-bottom: 20px;
+    order: -1; /* Forza l'immagine a stare in cima alla card nell'HTML attuale */
+    transition: var(--transition);
 }
 
-/* Titoli dei singoli prodotti */
+.menu-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Testi interni alla Card */
 .menu-item h2 {
-    margin-bottom: 6px;
-    /* Spazio sotto il titolo */
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
 }
 
-/* Paragrafo descrizione */
 .menu-item p {
-    margin: 6px 0;
-    /* Spaziatura verticale */
+    color: var(--testo-mutato);
+    font-size: 0.95rem;
+    font-weight: 300;
+    margin-bottom: 25px;
+    flex-grow: 1; /* Spinge il prezzo sempre in basso anche con testi corti */
 }
 
-/* Titolo generale di ogni sezione del menu */
-.menu-section-title {
-    font-size: 1.5em;
-    /* Dimensione font media */
-    margin-bottom: 15px;
-    /* Spazio sotto il titolo */
-    font-family: 'Pacifico';
-    /* Font decorativo */
-    color: #ffcc00;
-    /* Colore giallo oro */
-    text-align: center;
-    /* Allineamento al centro */
-    grid-column: 1 / -1;
-    /* Occupa tutta la larghezza della griglia */
-}
-
-/* Prezzo dei prodotti */
+/* Badge del Prezzo */
 .price {
-    margin-top: 8px;
-    /* Spazio sopra il prezzo */
-    font-weight: 700;
-    /* Testo in grassetto */
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--oro-neon);
+    background: rgba(255, 193, 7, 0.1);
+    padding: 6px 16px;
+    border-radius: 30px;
+    width: fit-content;
+    align-self: flex-start;
+    border: 1px solid rgba(255, 193, 7, 0.2);
 }
 
-/* Effetto hover sulle card del menu */
-.menu-item:hover {
-    transform: scale(1.03);
-    /* Leggera ingrandita al passaggio del mouse */
-    background-color: rgba(71, 86, 0, 0.593);
-    /* Cambia sfondo in verde scuro trasparente */
-}
-
-/* Navigazione menu */
-/* Barra di navigazione con link */
-.menu-nav {
-    display: flex;
-    /* Layout a riga */
-    justify-content: center;
-    /* Centra i link */
-    gap: 20px;
-    /* Spaziatura tra link */
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Sfondo nero semitrasparente */
-    backdrop-filter: blur(5px);
-    padding: 15px 0;
-    /* Padding verticale */
-    position: sticky;
-    /* Rimane visibile in cima quando si scrolla */
-    top: 0;
-    /* Posizione fissa in alto */
-    z-index: 1000;
-    /* Sopra altri elementi */
-    backdrop-filter: blur(4px);
-    /* Sfocatura sfondo sotto la navbar */
-}
-
-/* Stile link della barra di navigazione */
-.menu-nav a {
-    font-family: 'Raleway', sans-serif;
-    /* Font moderno sans-serif */
-    color: #ffcc00;
-    /* Colore giallo oro */
-    text-decoration: none;
-    /* Rimuove sottolineatura */
-    font-weight: bold;
-    /* Grassetto */
-    padding: 8px 16px;
-    /* Spaziatura interna */
-    border: 2px solid transparent;
-    /* Bordo trasparente per animazione */
-    border-radius: 5px;
-    /* Angoli arrotondati */
-    transition: 0.3s;
-    /* Transizione morbida per hover */
-}
-
-/* Effetto hover per i link della navbar */
-.menu-nav a:hover {
-    border-color: #ffcc00;
-    /* Bordo giallo oro */
-    background-color: rgba(255, 204, 0, 0.2);
-    /* Sfondo giallo chiaro trasparente */
-}
-
-/* Footer */
-/* Barra fissa in fondo alla pagina */
-footer {
-    font-family: 'Pacifico';
-
-    bottom: 0;
-    /* Attaccata in basso */
-    left: 0;
-    /* Allineata a sinistra */
+/* ==========================================================================
+   5. SEZIONE MAPPA (ULTRA-MODERNA)
+   ========================================================================== */
+.mappa-container {
+    grid-column: 1 / -1; 
     width: 100%;
-    /* Occupa tutta la larghezza */
-    padding: 15px 20px;
-    /* Spaziatura interna */
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Sfondo nero semitrasparente */
-    backdrop-filter: blur(5px);
-    color: white;
-    /* Testo bianco */
-    font-size: 0.9em;
-    /* Dimensione testo leggermente ridotta */
+    max-width: 1000px;
+    margin: 40px auto 60px;
+}
+
+#mappa {
+    width: 100%;
+    height: 450px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    transition: var(--transition);
+    /* Rende i colori della mappa leggermente dark per integrarsi nel sito */
+    filter: grayscale(10%) invert(0%) contrast(100%); 
+}
+
+#mappa:hover {
+    border-color: var(--oro-neon);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(255, 193, 7, 0.1);
+}
+
+/* ==========================================================================
+   6. FOOTER
+   ========================================================================== */
+footer {
+    grid-column: 1 / -1;
     text-align: center;
-    /* Testo centrato */
-    z-index: 1000;
-    /* Sopra tutti gli altri elementi */
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.9);
-    /* Ombra superiore per effetto sollevato */
+    padding: 60px 20px;
+    margin-top: 80px;
+    background: rgba(16, 18, 23, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+footer p:first-of-type {
+    color: var(--oro-neon);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+footer p:last-of-type {
+    color: var(--testo-mutato);
+    font-size: 0.85rem;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   7. MEDIA QUERIES (RESPONSIVE OTTIMIZZATO)
+   ========================================================================== */
+
+/* Tablet & Smartphone Grandi */
+@media screen and (max-width: 768px) {
+    header {
+        padding: 60px 20px 30px;
+    }
+    
+    header h1 {
+        font-size: 2.3rem;
+        letter-spacing: 2px;
+    }
+
+    .menu-nav {
+        top: 10px;
+        width: calc(100% - 30px);
+        gap: 5px;
+        padding: 6px;
+    }
+
+    .menu-nav a {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+
+    .menu {
+        gap: 20px;
+    }
+
+    #mappa {
+        height: 320px; /* Ridotto per non bloccare lo swipe del dito sui telefoni */
+    }
+}
+
+/* Smartphone Piccoli */
+@media screen and (max-width: 480px) {
+    .menu-nav {
+        flex-wrap: wrap; /* Permette ai pulsanti di andare a capo se lo schermo è minuscolo */
+        border-radius: 20px;
+        justify-content: center;
+    }
+    
+    .menu-nav a {
+        width: 45%; /* Due bottoni per riga su schermi piccolissimi */
+        justify-content: center;
+    }
+
+    .menu-item img {
+        height: 180px;
+    }
 }
