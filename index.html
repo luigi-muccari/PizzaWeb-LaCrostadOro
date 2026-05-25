@@ -14,9 +14,13 @@
     <link rel="icon" href="img/pizza.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <!-- Collegamento al file CSS esterno per gli stili -->
+
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFEZBrASwKXkxsxKoFw_aoSAYeqRf0VQE&sensor=false">
+        </script>
 </head>
 
-<body>
+<body onload="initialize()">
     <!-- Corpo principale della pagina visibile all'utente -->
 
     <header>
@@ -237,6 +241,13 @@
             <img src="img/bevande/caffè.webp" alt="Caffè">
         </section>
 
+        <div id="dove-siamo" class="menu-section-title">
+            <h2>📍 Dove Trovarci</h2>
+        </div>
+
+        <div class="mappa-container">
+            <div id="mappa"></div>
+        </div>
     </main>
 
     <footer>
@@ -246,6 +257,41 @@
         <p>Gruppo: Muccari Luigi(Project Manager), Mastria Antonio, Di Marino Davide, Cristofaro Giacomo</p>
         <!-- Elenco membri del gruppo -->
     </footer>
+
+    <script>
+        // Definizione delle coordinate (Colosseo di Roma)
+        var colosseo = new google.maps.LatLng(41.8902, 12.4922);
+
+        var opzioni = {
+            zoom: 15, // Zoom ideale per mostrare le vie intorno al locale
+            center: colosseo,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        // Configurazione dell'icona personalizzata a forma di pizza
+        var iconaPizza = {
+            url: "https://cdn-icons-png.flaticon.com/512/3595/3595455.png", // URL di una bellissima icona pizza
+            scaledSize: new google.maps.Size(45, 45), // Ridimensiona l'immagine a 45x45 pixel (perfetta per la mappa)
+            origin: new google.maps.Point(0, 0),       // Origine del ritaglio dell'immagine
+            anchor: new google.maps.Point(22, 45)      // Punto di ancoraggio: il centro della base della pizza tocca le coordinate
+        };
+
+        function initialize() {
+            // Inizializzazione della mappa
+            var mappa = new google.maps.Map(document.getElementById("mappa"), opzioni);
+
+            // Creazione del marker con l'icona della pizza
+            var mioMarker = new google.maps.Marker({
+                position: colosseo,
+                map: mappa,
+                title: "Pizzeria La Crosta d'Oro",
+                icon: iconaPizza, // Applica l'icona definita sopra
+                animation: google.maps.Animation.DROP // Effetto rimbalzo quando si carica la mappa!
+            });
+
+            mioMarker.setMap(mappa);
+        }
+    </script>
 </body>
 
 </html>
